@@ -23,7 +23,11 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: date && terraform fmt -check
+        run: |
+         date && terraform fmt -check
+         ls
+         pwd
+         cd ~/home
 
       - name: Terraform Init
         id: init
