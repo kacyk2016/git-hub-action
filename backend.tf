@@ -3,7 +3,7 @@ terraform {
     organization = "FusionIT"
 
     workspaces {
-      name = "git-hub-action"
+      name = "git-hub-actionk"
     }
   }
 }
