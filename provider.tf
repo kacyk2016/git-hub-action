@@ -13,7 +13,7 @@ provider "aws" {
 }
 
 terraform {
-  cloud {
+  aws {
     organization = "FusionIT"
 
     workspaces {
