@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - destroy
   pull_request:
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt 
+        run: terraform fmt
 
       - name: Terraform Init
         id: init
@@ -49,24 +50,18 @@ jobs:
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
             #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
             <details><summary>Show Plan</summary>
-
             \`\`\`\n
             ${process.env.PLAN}
             \`\`\`
-
             </details>
-
             *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: output
             })
-
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
@@ -74,3 +69,7 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
+
+      - name: Terraform destroy
+        if: github.ref == 'refs/heads/destroy' && github.event_name == 'push'
+        run: terraform destroy -auto-approve -input=false 
